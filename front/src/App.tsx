@@ -1,18 +1,17 @@
 import { useState } from 'react'
 import './App.css'
+import {
+  BrowserRouter as Router, Route, Routes 
+} from "react-router-dom";
+import { Main } from "./pages";
 
 function App() {
-  const [count, setCount] = useState(0)
-  const test = (e:Event) =>{
-    console.log(e)
-  }
-  const test2 = (e:Event) => {
-    console.log(e)
-  }
   return (
-    <div className="App" >
-      <div onDragStart={test} onDragEnd={test2} className="test" draggable="true"></div>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Main />} />
+      </Routes>
+    </Router>
   )
 }
 

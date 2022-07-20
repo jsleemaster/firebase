@@ -1,8 +1,6 @@
-import { useState } from 'react'
-import './App.css'
-import {
-  BrowserRouter as Router, Route, Routes 
-} from "react-router-dom";
+import { useState } from "react";
+import "./App.css";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { Main } from "./pages";
 
 function App() {
@@ -12,7 +10,7 @@ function App() {
         <Route path="/" element={<Main />} />
       </Routes>
     </Router>
-  )
+  );
 }
 
-export default App
+export default App;

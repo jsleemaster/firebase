@@ -14,7 +14,8 @@ function Index() {
 
   const concatBox = randomBox1.concat(randomBox2)
   const shuffleArr = shuffle(concatBox)
-  const boxArr:object[] = []
+  // let boxArr:object[] = []
+  const [boxArr, setBoxArr] = useState<object[]>([])
   
   const color = ['red','gray','green','blue']
   shuffleArr.map((v)=>{
@@ -27,13 +28,19 @@ function Index() {
     }
     boxArr.push(obj)
   })
-  const ClickOne = [];
-  const ClickTwo = [];
-  const clickbox = (number:object, index:number) => {
-    //첫번째 값이 있는지 확인
-    //첫번째 값이랑 두번째 값이 같은지 확인
-    //틀리다면 값 초기화 시간초 감소
-    //맞다면 배열 복사 후 삭제한 값을 new Arr로 교체
+  let one:number[] = [];  
+  const clickbox = (number:number, index:number) => {
+    if ( one.length !== 0 ) {
+      //두번째 클릭
+      if ( one.findIndex((v)=>v === number) !== -1) {
+        one = []
+        //삭제로직
+      } else {
+        return;
+      }
+    } else {
+      one.push(number)
+    }
   }
   return (
     <>
@@ -42,7 +49,7 @@ function Index() {
         return <div 
         className='w-32 h-32 flex items-center justify-center' key={i}
         style={v.style} 
-        onClick={()=>clickbox(v,i)}
+        onClick={()=>clickbox(v.number,i)}
         >{v.number}</div>
       })}
     </div>

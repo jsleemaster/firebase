@@ -5,9 +5,8 @@ const shuffle = (arr: Array<number>) => {
   return arr.slice().sort(() => Math.random() - 0.5);
 };
 
-
 interface Shuffle {
-  number? : number,
+  number? : number | undefined,
   style? : object
 }
 
@@ -32,20 +31,20 @@ function Index() {
 
     setBoxList(shuffleList);
   }, []);
-
-  let one: number[] = [];
+  const [firstItem, setFirstItem] = useState<Array<Object>>([])
+  const [twoItem, setTwoItem] = useState<Array<Object>>([])
 
   const clickBox = (number: number, index: number) => {
-    if (one.length !== 0) {
-      //두번째 클릭
-      if (one.findIndex((v)=>v === number) !== -1) {
-        one = [];
-        //삭제로직
-      } else {
-        return;
+    let newArr = []
+    newArr.push(number)
+    if ( firstItem.length > 0 ) {
+      if ( firstItem[0] === number) {
+        let arr = boxList.filter((v)=>v.number !== number)
+        setBoxList(arr)
+        setFirstItem([])
       }
     } else {
-      one.push(number)
+      setFirstItem(newArr)
     }
   };
 

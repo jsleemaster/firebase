@@ -10,14 +10,19 @@ interface Shuffle {
   style? : object
 }
 
+interface Item {
+  number?: number,
+  index?: number
+}
 const color = ['red','gray','green','blue'];
 
 function Index() {
   const [boxList, setBoxList] = useState<Shuffle[]>([]);
+  const [firstItem, setFirstItem] = useState<Partial<Item>>({})
+  const [twoItem, setTwoItem] = useState<Partial<Item>>({})
 
   useEffect(() => {
     const randomBox = Array(9).fill(0).map((_, i) => i + 1);
-
     const shuffleList = shuffle([...randomBox, ...randomBox]).map((v)=>{
       return {
         number: v,
@@ -28,25 +33,33 @@ function Index() {
         }
       };
     });
-
     setBoxList(shuffleList);
   }, []);
-  const [firstItem, setFirstItem] = useState<Array<Object>>([])
-  const [twoItem, setTwoItem] = useState<Array<Object>>([])
+
 
   const clickBox = (number: number, index: number) => {
-    let newArr = []
-    newArr.push(number)
-    if ( firstItem.length > 0 ) {
-      if ( firstItem[0] === number) {
-        let arr = boxList.filter((v)=>v.number !== number)
-        setBoxList(arr)
-        setFirstItem([])
-      }
+    let newObj:Partial<Item> = {};
+    newObj.number = number
+    newObj.index = index
+    if ( firstItem?.number ) {
+      if (firstItem.number === number && firstItem.index === index) return ;
+      setTwoItem(newObj) 
     } else {
-      setFirstItem(newArr)
-    }
+      setFirstItem(newObj)
+    } 
   };
+  useEffect(()=>{
+    if (twoItem?.number) {
+      if ( firstItem.number === twoItem.number) {
+        let result = boxList.filter((v)=> v.number !== twoItem.number)
+        setBoxList(result)
+      }
+    } 
+  },[twoItem])
+  useEffect(()=>{
+    if (firstItem?.number) {
+    }
+  },[firstItem])
 
   return (
     <>
@@ -56,7 +69,7 @@ function Index() {
             className='w-32 h-32 flex items-center justify-center'
             key={i}
             style={v.style} 
-            onClick={() => clickBox(v.number, i)}
+            onClick={() => clickBox(v.number ? v.number : -1, i)}
           >{v.number}</div>
         ))}
       </div>

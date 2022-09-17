@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 const Main = () =>{
   return (
     <div className='flex flex-col justify-center items-center'>
-      <h1 className="font-bold text-4xl text-yellow-500 mb-5">이순명의 포트폴리오 </h1>
       <nav>
           <Link to="/sameNumber" className='text-blue-400 text-xl'>- 같은 숫자 찾기</Link>
       </nav>

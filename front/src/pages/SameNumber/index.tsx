@@ -12,9 +12,11 @@ interface Shuffle {
 
 interface Item {
   number?: number,
-  index?: number
+  index?: number,
+  style?: object,
 }
 const color = ['red','gray','green','blue'];
+const activeBorderColor = 'border-yellow-400'
 
 function Index() {
   const [boxList, setBoxList] = useState<Shuffle[]>([]);
@@ -29,7 +31,10 @@ function Index() {
         style: {
           color : color[Math.floor(Math.random() * color.length -1 )],
           backgroundColor : '#F9F9F9',
-          cursor : 'pointer'
+          cursor : 'pointer',
+          borderRadius: '9999px',
+          fontSize: '1.2rem',
+          transition: 'all .2s ease-out'
         }
       };
     });
@@ -37,15 +42,18 @@ function Index() {
   }, []);
 
 
-  const clickBox = (number: number, index: number) => {
-    let newObj:Partial<Item> = {};
-    newObj.number = number
-    newObj.index = index
+  const clickBox = (value: Item, index: number) => {
+    let tmpObject:Partial<Item> = {};
+    tmpObject.number = value.number
+    tmpObject.index = index
     if ( firstItem?.number ) {
-      if (firstItem.number === number && firstItem.index === index) return ;
-      setTwoItem(newObj) 
+      if (firstItem.number === value.number && firstItem.index === index) {
+        setFirstItem({})
+        return;
+      }
+      setTwoItem(tmpObject)
     } else {
-      setFirstItem(newObj)
+      setFirstItem(tmpObject)
     } 
   };
   useEffect(()=>{
@@ -53,23 +61,30 @@ function Index() {
       if ( firstItem.number === twoItem.number) {
         let result = boxList.filter((v)=> v.number !== twoItem.number)
         setBoxList(result)
+        setTwoItem({})
+        setFirstItem({})
       }
     } 
   },[twoItem])
-  useEffect(()=>{
-    if (firstItem?.number) {
+  const activeCheck = (value:Item,index:number) => {
+    if (firstItem?.number){
+      if (firstItem.number === value.number && firstItem.index === index) {
+        return activeBorderColor;
+      }
+    } else {
+      return ''
     }
-  },[firstItem])
-
+  }
   return (
     <>
-      <div className='flex flex-wrap justify-center items-center w-full' >
+      <div className='flex flex-wrap justify-center items-center w-full'>
         {boxList.map((v,i) => (
           <div
-            className='w-32 h-32 flex items-center justify-center'
+            className={`w-32 h-32 flex items-center justify-center border
+            border-solid ${activeCheck(v,i)}`}
             key={i}
             style={v.style} 
-            onClick={() => clickBox(v.number ? v.number : -1, i)}
+            onClick={() => clickBox(v, i)}
           >{v.number}</div>
         ))}
       </div>

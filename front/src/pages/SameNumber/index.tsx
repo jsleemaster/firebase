@@ -16,7 +16,7 @@ interface Item {
   style?: object,
 }
 const color = ['red','gray','green','blue'];
-const activeBorderColor = 'border-yellow-400'
+const activeStyle = 'border-2 border-yellow-400'
 
 function Index() {
   const [boxList, setBoxList] = useState<Shuffle[]>([]);
@@ -30,11 +30,12 @@ function Index() {
         number: v,
         style: {
           color : color[Math.floor(Math.random() * color.length -1 )],
-          backgroundColor : '#F9F9F9',
+          backgroundColor : '#fff',
           cursor : 'pointer',
           borderRadius: '9999px',
           fontSize: '1.2rem',
-          transition: 'all .2s ease-out'
+          transition: 'all .2s ease-out',
+          margin: '10px',
         }
       };
     });
@@ -69,7 +70,7 @@ function Index() {
   const activeCheck = (value:Item,index:number) => {
     if (firstItem?.number){
       if (firstItem.number === value.number && firstItem.index === index) {
-        return activeBorderColor;
+        return activeStyle;
       }
     } else {
       return ''

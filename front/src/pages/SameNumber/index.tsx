@@ -1,4 +1,5 @@
-import { useState,useEffect } from 'react'
+import { useState ,useEffect } from 'react'
+import { useAutoAnimate } from '@formkit/auto-animate/react'
 
 const shuffle = (arr: Array<number>) => {
   if (arr.length === 0) return [];
@@ -10,18 +11,18 @@ interface Shuffle {
   style? : object
 }
 
-interface Item {
-  number?: number,
+interface Item extends Shuffle{
   index?: number,
-  style?: object,
 }
+
 const color = ['red','gray','green','blue'];
-const activeStyle = 'border-2 border-yellow-400'
+const activeStyle = 'border-2 border-yellow-400';
 
 function Index() {
   const [boxList, setBoxList] = useState<Shuffle[]>([]);
   const [firstItem, setFirstItem] = useState<Partial<Item>>({})
   const [twoItem, setTwoItem] = useState<Partial<Item>>({})
+  const [parent, enableAnimations] = useAutoAnimate()
 
   useEffect(() => {
     const randomBox = Array(9).fill(0).map((_, i) => i + 1);
@@ -78,7 +79,7 @@ function Index() {
   }
   return (
     <>
-      <div className='flex flex-wrap justify-center items-center w-full'>
+      <div className='flex flex-wrap justify-center items-center w-full' ref={parent} >
         {boxList.map((v,i) => (
           <div
             className={`w-32 h-32 flex items-center justify-center border

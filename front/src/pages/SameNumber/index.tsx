@@ -79,7 +79,7 @@ function Index() {
   }
   return (
     <>
-      <div className='flex flex-wrap justify-center items-center w-full' ref={parent} >
+      <div className='flex flex-wrap justify-center items-center w-full h-full' ref={parent} >
         {boxList.map((v,i) => (
           <div
             className={`w-32 h-32 flex items-center justify-center border

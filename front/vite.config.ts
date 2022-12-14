@@ -8,4 +8,9 @@ export default defineConfig({
     outDir: path.resolve(__dirname, `../dist`),
     chunkSizeWarningLimit: 2000,
   },
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "./src"),
+    },
+  },
 });

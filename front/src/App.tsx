@@ -1,20 +1,22 @@
-import React, { Suspense ,lazy } from 'react';
-
+import { Suspense } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-const Main = lazy(()=> import('./pages/Main'))
-const SameNumber = lazy(()=> import('./pages/SameNumber/index'))
 
-const Loading = lazy(()=> import('./components/Loading'))
+import Main from "@/pages/Main";
+import SameNumber from "@/pages/SameNumber/index";
+import PercentCalculator from "@/pages/PercentCalculator/index";
+
+import Loading from "@/components/Loading";
 
 function App() {
   return (
     <Router>
-        <Suspense fallback={<Loading /> }>
-          <Routes>
-            <Route path="/" element={<Main />} />
-            <Route path="/sameNumber" element={<SameNumber />} />
-          </Routes>
-        </Suspense>
+      <Suspense fallback={<Loading />}>
+        <Routes>
+          <Route path="/" element={<Main />} />
+          <Route path="/PercentCalculator" element={<PercentCalculator />} />
+          <Route path="/sameNumber" element={<SameNumber />} />
+        </Routes>
+      </Suspense>
     </Router>
   );
 }

@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { useAutoAnimate } from "@formkit/auto-animate/react";
 
 const shuffle = (arr: Array<number>) => {
   if (arr.length === 0) return [];
@@ -7,11 +6,8 @@ const shuffle = (arr: Array<number>) => {
 };
 
 interface Shuffle {
-  number?: number | undefined;
+  number: number;
   style?: object;
-}
-
-interface Item extends Shuffle {
   index?: number;
 }
 
@@ -20,9 +16,8 @@ const activeStyle = "border-2 border-yellow-400";
 
 function Index() {
   const [boxList, setBoxList] = useState<Shuffle[]>([]);
-  const [firstItem, setFirstItem] = useState<Partial<Item>>({});
-  const [twoItem, setTwoItem] = useState<Partial<Item>>({});
-  const [parent, enableAnimations] = useAutoAnimate();
+  const [firstItem, setFirstItem] = useState<Partial<Shuffle>>({});
+  const [twoItem, setTwoItem] = useState<Partial<Shuffle>>({});
 
   useEffect(() => {
     setBoxList(randomList);
@@ -37,7 +32,7 @@ function Index() {
       return {
         number: v,
         style: {
-          color: color[Math.floor(Math.random() * color.length - 1)],
+          color: color[Math.floor(Math.random() * color.length)],
           backgroundColor: "#fff",
           cursor: "pointer",
           borderRadius: "9999px",
@@ -49,8 +44,8 @@ function Index() {
     });
   };
 
-  const clickBox = (value: Item, index: number) => {
-    let tmpObject: Partial<Item> = {};
+  const clickBox = (value: Shuffle, index: number) => {
+    let tmpObject: Partial<Shuffle> = {};
     tmpObject.number = value.number;
     tmpObject.index = index;
     if (firstItem?.number) {
@@ -67,7 +62,9 @@ function Index() {
   useEffect(() => {
     if (twoItem?.number) {
       if (firstItem.number === twoItem.number) {
-        let result = boxList.filter((v) => v.number !== twoItem.number);
+        let result = boxList.filter(
+          (v: Partial<Shuffle>) => v.number !== twoItem.number
+        );
         setBoxList(result);
         setTwoItem({});
         setFirstItem({});
@@ -75,22 +72,19 @@ function Index() {
     }
   }, [twoItem]);
 
-  const activeCheck = (value: Item, index: number) => {
+  const activeCheck = (value: Shuffle, index: number) => {
     if (firstItem?.number) {
       if (firstItem.number === value.number && firstItem.index === index) {
         return activeStyle;
       }
     } else {
-      return "";
+      return null;
     }
   };
 
   return (
     <>
-      <ul
-        className="flex flex-wrap justify-center items-center w-full h-full"
-        ref={parent}
-      >
+      <ul className="flex flex-wrap justify-center items-center w-full h-full">
         {boxList.map((v, i) => (
           <li
             className={`w-32 h-32 flex items-center justify-center border
